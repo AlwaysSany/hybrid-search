@@ -87,7 +87,7 @@ const SearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
 
   const selectSuggestion = (item) => {
     if (!item) return;
-    setSearchQuery(item.name || '');
+    setSearchQuery((item.name || '').trim());
     setShowSuggest(false);
     onSearch();
   };
@@ -99,6 +99,8 @@ const SearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
       } else {
         setShowSuggest(false);
         setSuggestions([]);
+        // Trim on submit
+        setSearchQuery((prev) => prev.trim());
         onSearch();
       }
     } else if (event.key === 'ArrowDown') {
@@ -115,6 +117,8 @@ const SearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
   const handleSearchClick = () => {
     setShowSuggest(false);
     setSuggestions([]);
+    // Trim on submit
+    setSearchQuery((prev) => prev.trim());
     onSearch();
   };
 
@@ -126,7 +130,7 @@ const SearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
           placeholder="Search products..."
           value={searchQuery}
           onKeyDown={handleKeyDown}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) => setSearchQuery(e.target.value.replace(/^\s+/, ''))}
           onFocus={() => suggestions.length && setShowSuggest(true)}
           onBlur={() => setTimeout(() => setShowSuggest(false), 100)}
         />
@@ -156,7 +160,7 @@ const SearchBar = ({ searchQuery, setSearchQuery, onSearch }) => {
 
 const ProductCard = ({ product, searchTerm, products, onProductClick }) => {
   // Use a local fallback image to avoid external errors and flicker
-  const defaultImage = "/home-product-store.png";
+  const defaultImage = "/placeholder-product.svg";
 
   const handleClick = () => {
 
@@ -253,7 +257,7 @@ const DetailsModal = ({ open, onClose, productId }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
-  const defaultImage = '/home-product-store.png';
+  const defaultImage = '/placeholder-product.svg';
 
   useEffect(() => {
     let cancelled = false;

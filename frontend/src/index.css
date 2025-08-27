@@ -69,13 +69,14 @@ code {
 
 .search-bar input {
   width: 100%;
-  padding: 14px 16px;
+  padding: 10px 12px; /* reduce inner horizontal padding */
   font-size: 16px;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: rgba(255,255,255,0.04);
   color: var(--text);
   outline: none;
+  text-indent: 0; /* ensure no extra indent */
   transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 .search-bar input:focus {
@@ -193,7 +194,7 @@ code {
 
 .search-bar input {
   width: 80%;
-  padding: 12px 14px;
+  padding: 10px 12px; /* keep consistent with main rule */
   font-size: 16px;
   margin-right: 10px;
   box-sizing: border-box;

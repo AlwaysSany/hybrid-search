@@ -6,6 +6,7 @@ from sentence_transformers import SentenceTransformer
 from typing import List, Optional
 import os
 from dotenv import load_dotenv
+import logging
 
 load_dotenv()
 
@@ -140,6 +141,7 @@ def build_hybrid_query(
     else:
         query = organic_query
 
+    logging.info(query)
     return query
 
 
@@ -159,7 +161,7 @@ def search_products(
             "_source": query["_source"],
         }
 
-    print(query)
+    logging.info(query)
     # Elasticsearch v9: Avoid deprecated 'body' parameter. Pass named args instead.
     search_kwargs = {"index": "products-catalog", "size": 20}
     if "_source" in query:
@@ -173,7 +175,7 @@ def search_products(
 
     results = []
     for hit in response["hits"]["hits"]:
-        print(f"Product Name: {hit['_source']['name']}, Score: {hit['_score']}")
+        logging.info(f"Product Name: {hit['_source']['name']}, Score: {hit['_score']}")
 
         results.append(
             {
