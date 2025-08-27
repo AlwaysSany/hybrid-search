@@ -1,0 +1,21 @@
+[project]
+name = "hybrid-search-backend"
+version = "0.1.0"
+description = "Backend API for hybrid search with Elasticsearch 9"
+requires-python = ">=3.9"
+
+# Match requirements.txt
+dependencies = [
+  "elasticsearch>=8.15,<9",
+  "fastapi",
+  "uvicorn[standard]",
+  "requests~=2.26.0",
+  "sentence-transformers>=3.0.1,<4",
+  "Pillow>=10.3.0",
+  "transformers>=4.44,<5",
+  "tokenizers>=0.20.0",
+  "PyYAML",
+]
+
+[tool.uv]
+package = false
