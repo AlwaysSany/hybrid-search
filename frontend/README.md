@@ -5,9 +5,6 @@ responsible for displaying a list of products and providing search and filtering
 functionality in the catalog. It uses a hybrid search that combines lexical and 
 semantic search techniques, offering more accurate and relevant results.
 
-## Working Demo
-
-![frontend_search_ui.png](public%2Ffrontend_search_ui.png)
 
 ## Features
 

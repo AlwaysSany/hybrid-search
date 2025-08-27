@@ -2,6 +2,11 @@
 
 This project consists of two main components: a front-end application and an API. Together, they form a product search platform where users can browse, search, and filter products using a hybrid search mechanism that combines lexical and semantic techniques.
 
+## Working Demo
+
+![frontend_search_ui.png](frontend/public/frontend_search_ui.png)
+
+
 ## Project Structure
 
 - **Front-end**: A React application responsible for displaying products, handling user interactions, and performing searches via the API.
