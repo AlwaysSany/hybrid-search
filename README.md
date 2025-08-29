@@ -90,22 +90,22 @@ docker compose up -d
 
 ```bash
 cd ../infra
-python create_index.py
+uv run create_index.py
 ```
 
 3) Ingest dataset with vectors
 
 ```bash
 cd ../ingestion
-python ingestion.py
+uv run ingestion.py
 ```
 
 4) Run the backend API (FastAPI)
 
 ```bash
 cd ../api
-python -m pip install -r ../requirements.txt
-uvicorn api:app --host 127.0.0.1 --port 5000 --reload
+uv sync
+uv run uvicorn api:app --host 127.0.0.1 --port 5000 --reload
 ```
 
 5) Run the frontend (React)
@@ -131,19 +131,19 @@ Open http://127.0.0.1:3000 (frontend) → API at http://127.0.0.1:5000.
 ```bash
 # terminal A
 cd backend/infra
-python create_index.py
+uv run create_index.py
 
 # terminal B
 cd ../ingestion
-python ingestion.py
+uv run ingestion.py
 ```
 
 3) Start backend API
 
 ```bash
 cd backend/api
-python -m pip install -r ../requirements.txt
-uvicorn api:app --host 127.0.0.1 --port 5000 --reload
+uv sync
+uv run uvicorn api:app --host 127.0.0.1 --port 5000 --reload
 ```
 
 4) Start frontend
@@ -172,9 +172,9 @@ npm start
 
 ```bash
 cd backend/docker && docker compose up -d \
-&& cd ../infra && python create_index.py \
-&& cd ../ingestion && python ingestion.py \
-&& cd ../api && uvicorn api:app --host 127.0.0.1 --port 5000 --reload
+&& cd ../infra && uv run create_index.py \
+&& cd ../ingestion && uv run ingestion.py \
+&& cd ../api && uv sync && uv run uvicorn api:app --host 127.0.0.1 --port 5000 --reload
 ```
 
 In another terminal:

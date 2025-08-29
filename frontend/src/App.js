@@ -2,16 +2,51 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import {
   createTracker,
-  trackPageView,
-  trackSearch,
-  trackSearchClick
+  trackPageView as _trackPageView,
+  trackSearch as _trackSearch,
+  trackSearchClick as _trackSearchClick
 } from "@elastic/behavioral-analytics-javascript-tracker";
 
-createTracker({
-  endpoint: "endpoint",
-  collectionName: "tracking-search",
-  apiKey: "key"
-});
+// Configure analytics from env and disable by default in dev when not configured
+const ANALYTICS_ENDPOINT = process.env.REACT_APP_ANALYTICS_ENDPOINT; // e.g. https://<deployment-id>.<region>.cloud.es.io
+const ANALYTICS_COLLECTION = process.env.REACT_APP_ANALYTICS_COLLECTION; // e.g. tracking-search
+const ANALYTICS_API_KEY = process.env.REACT_APP_ANALYTICS_API_KEY; // API key with behavioral analytics privileges
+
+const hasAbsoluteEndpoint = typeof ANALYTICS_ENDPOINT === 'string' && /^https?:\/\//i.test(ANALYTICS_ENDPOINT);
+const analyticsEnabled = Boolean(
+  hasAbsoluteEndpoint && ANALYTICS_COLLECTION && ANALYTICS_API_KEY
+);
+
+if (analyticsEnabled) {
+  try {
+    createTracker({
+      endpoint: ANALYTICS_ENDPOINT,
+      collectionName: ANALYTICS_COLLECTION,
+      apiKey: ANALYTICS_API_KEY,
+    });
+  } catch (e) {
+    // If tracker init fails, keep the app functional and just disable analytics
+    // eslint-disable-next-line no-console
+    console.warn('Behavioral analytics initialization failed; disabling analytics.', e);
+  }
+} else {
+  // eslint-disable-next-line no-console
+  console.warn('Behavioral analytics disabled: set REACT_APP_ANALYTICS_ENDPOINT (absolute URL), REACT_APP_ANALYTICS_COLLECTION, and REACT_APP_ANALYTICS_API_KEY to enable.');
+}
+
+// Safe wrappers avoid errors when analytics are disabled or misconfigured
+const trackPageView = (payload) => {
+  if (!analyticsEnabled) return;
+  try { return _trackPageView(payload); } catch (_) { /* no-op */ }
+};
+const trackSearch = (payload) => {
+  if (!analyticsEnabled) return;
+  try { return _trackSearch(payload); } catch (_) { /* no-op */ }
+};
+const trackSearchClick = (payload) => {
+  if (!analyticsEnabled) return;
+  try { return _trackSearchClick(payload); } catch (_) { /* no-op */ }
+};
 
 const Facets = ({ categories = [], productTypes = [], brands = [], selectedFacets, onFacetChange }) => {
   return (
